@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,108 +46,20 @@ public class User {
 	@Column(name = "role",nullable = false)
 	private String role;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "userid",fetch = FetchType.LAZY,targetEntity = Transaction.class)
 	private List<Product> UserBuy;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "userid",fetch = FetchType.LAZY,targetEntity = Product.class)
 	private List<Product> UserSell;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "userid",fetch = FetchType.LAZY,targetEntity = ReportProduct.class)
 	private List<Product> Userreports;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "userid",fetch = FetchType.LAZY,targetEntity = RequestProduct.class)
 	private List<Product> Userrequests;
-	
-	
-
-	/*public int getUserid() {
-		return userid;
-	}
-
-	public void setUserid(int userid) {
-		this.userid = userid;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getContactno() {
-		return contactno;
-	}
-
-	public void setContactno(String contactno) {
-		this.contactno = contactno;
-	}
-
-	public boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public List<Product> getUserBuy() {
-		return UserBuy;
-	}
-
-	public void setUserBuy(List<Product> userBuy) {
-		UserBuy = userBuy;
-	}
-
-	public List<Product> getUserSell() {
-		return UserSell;
-	}
-
-	public void setUserSell(List<Product> userSell) {
-		UserSell = userSell;
-	}
-
-	public List<Product> getUserreports() {
-		return Userreports;
-	}
-
-	public void setUserreports(List<Product> userreports) {
-		Userreports = userreports;
-	}
-
-	public List<Product> getUserrequests() {
-		return Userrequests;
-	}
-
-	public void setUserrequests(List<Product> userrequests) {
-		Userrequests = userrequests;
-	}*/
-	
-	
 	
 }

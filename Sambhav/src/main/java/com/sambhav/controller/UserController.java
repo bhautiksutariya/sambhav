@@ -54,22 +54,18 @@ public class UserController {
                         loginRequest.getPassword()
                 )
         );
-        
-        System.out.println(req.getCookies()[0].getName());
-        
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        res.addCookie(new Cookie("test","value"));
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 	
 	@PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        /*if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email is already taken!"),
                     HttpStatus.BAD_REQUEST);
-        }*/
+        }
 
         // Creating user's account
         User user = new User();

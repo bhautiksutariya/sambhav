@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 
 @Entity
@@ -29,7 +31,8 @@ public class Category {
 	@Column(name = "isactive",nullable = false,columnDefinition = "boolean default true")
 	private boolean status;
 	
-	@OneToMany(mappedBy = "categoryid",fetch = FetchType.LAZY)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "categoryid",fetch = FetchType.LAZY,orphanRemoval = true)
 	private List<Product> products;
 	
 	

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Entity
@@ -25,10 +27,12 @@ public class RequestProduct {
 	@Column(name = "requestid")
 	private int requestid;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "productid")
 	private Product productid;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "userid")
 	private User userid;
