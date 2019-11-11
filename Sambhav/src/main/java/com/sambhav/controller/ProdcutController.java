@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,8 @@ import com.sambhav.model.Category;
 import com.sambhav.model.CategoryDTO;
 import com.sambhav.model.Product;
 import com.sambhav.model.ProductDTO;
+import com.sambhav.security.CurrentUser;
+import com.sambhav.security.UserPrincipal;
 import com.sambhav.service.CategoryDAO;
 import com.sambhav.service.ProductDAO;
 
@@ -36,6 +40,7 @@ public class ProdcutController {
 	@Autowired
 	private CategoryDAO categoryDao;
 	
+	
 	@PostMapping("/addCategory")
 	private String addCategory(CategoryDTO category)
 	{
@@ -44,9 +49,11 @@ public class ProdcutController {
 	}
 	
 	@GetMapping("/getCategory")
-	@ResponseBody
 	private List<Category> getCategory()
 	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+		System.out.print(userPrincipal.getEmail()+":"+userPrincipal.getId());
 		return categoryDao.getCategory();
 	}
 	
@@ -60,11 +67,18 @@ public class ProdcutController {
 	private String addProduct(String productDTO, @RequestParam("files") MultipartFile []files) throws IOException
 	{
 		ProductDTO product=new ObjectMapper().readValue(productDTO, ProductDTO.class);
+		StringBuilder images=new StringBuilder();
 		for(MultipartFile file:files)
 		{
 			Path filename=Paths.get(fileDirectory,file.getOriginalFilename());
-			Files.write(filename, file.getBytes());
+			//Files.write(filename, file.getBytes());
+			images.append(file.getOriginalFilename()+";");
 		}
+		if(images.length()>0)
+		{
+			images.replace(images.length()-1, images.length(), "");
+		}
+		productDao.addProduct(product,images);
 		return "Product Successfully Added";
 	}
 	

@@ -28,6 +28,7 @@ import com.sambhav.repository.UserRepository;
 import com.sambhav.security.JwtTokenProvider;
 import com.sambhav.service.ApiResponse;
 import com.sambhav.service.JwtAuthenticationResponse;
+import com.sambhav.service.UserDAO;
 
 @RestController
 @RequestMapping("/rest")
@@ -37,7 +38,7 @@ public class UserController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserDAO userDao;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -60,29 +61,16 @@ public class UserController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 	
+	@SuppressWarnings("unchecked")
 	@PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(userDao.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         // Creating user's account
-        User user = new User();
-        
-        user.setEmail(signUpRequest.getEmail());
-        
-        user.setContactno(signUpRequest.getContactno());
-        
-        user.setUsername(signUpRequest.getName());
-
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-
-        user.setRole(signUpRequest.getRole());
-        
-        user.setStatus(true);
-
-        User result = userRepository.save(user);
+        User result=userDao.addUser(signUpRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/users/{username}")
