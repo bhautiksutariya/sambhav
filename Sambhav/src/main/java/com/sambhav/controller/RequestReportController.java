@@ -51,7 +51,7 @@ public class RequestReportController {
 		return "Product Successfully Requested";
 	}
 	
-	@GetMapping("/reportProduct")
+	@GetMapping("/requestProduct")
 	private List<RequestProduct> getreportedProduct()
 	{
 		return requestProductDao.getRequestProduct();

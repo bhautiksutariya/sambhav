@@ -103,26 +103,6 @@ public class ProdcutController {
 		return productDao.getProduct(id);
 	}
 	
-	@PostMapping("/requestProduct")
-	private String requestProduct(@RequestBody RequestProductDTO product)
-	{
-		System.out.println("product "+product.getProductid());
-		requestProductDao.requestProduct(product);
-		return "Product Successfully Requested";
-	}
-	
-	@GetMapping("/requestProduct")
-	private List<RequestProduct> getrequestedProduct()
-	{
-		return requestProductDao.getRequestProduct();
-	}
-	
-	@GetMapping("/requestProduct/{id}")
-	private List<RequestProduct> getrequestedProduct(@PathVariable int id)
-	{
-		return requestProductDao.getRequestProduct(id);
-	}
-	
 	@PostMapping("/verifyToken")
 	private boolean verifyToken(@RequestParam String token)
 	{
