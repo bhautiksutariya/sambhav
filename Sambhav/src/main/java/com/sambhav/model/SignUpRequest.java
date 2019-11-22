@@ -15,9 +15,6 @@ public class SignUpRequest {
     private String password;
     
     @NotBlank
-    private String role;
-    
-    @NotBlank
     private String contactno;
 
     public String getContactno() {
@@ -51,12 +48,4 @@ public class SignUpRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
 }

@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,10 +24,14 @@ import com.sambhav.model.Category;
 import com.sambhav.model.CategoryDTO;
 import com.sambhav.model.Product;
 import com.sambhav.model.ProductDTO;
+import com.sambhav.model.RequestProduct;
+import com.sambhav.model.RequestProductDTO;
 import com.sambhav.security.CurrentUser;
+import com.sambhav.security.JwtTokenProvider;
 import com.sambhav.security.UserPrincipal;
 import com.sambhav.service.CategoryDAO;
 import com.sambhav.service.ProductDAO;
+import com.sambhav.service.RequestProductDAO;
 
 @RestController
 @RequestMapping("/rest")
@@ -40,10 +45,16 @@ public class ProdcutController {
 	@Autowired
 	private CategoryDAO categoryDao;
 	
+	@Autowired
+	private RequestProductDAO requestProductDao;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@PostMapping("/addCategory")
-	private String addCategory(CategoryDTO category)
+	private String addCategory(@RequestBody CategoryDTO category)
 	{
+		System.out.println(category.getCategoryname());
 		categoryDao.addCategory(category);
 		return "Category Successfully Added";
 	}
@@ -51,9 +62,6 @@ public class ProdcutController {
 	@GetMapping("/getCategory")
 	private List<Category> getCategory()
 	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
-		System.out.print(userPrincipal.getEmail()+":"+userPrincipal.getId());
 		return categoryDao.getCategory();
 	}
 	
@@ -93,6 +101,34 @@ public class ProdcutController {
 	private Product getProduct(@PathVariable int id)
 	{
 		return productDao.getProduct(id);
+	}
+	
+	@PostMapping("/requestProduct")
+	private String requestProduct(@RequestBody RequestProductDTO product)
+	{
+		System.out.println("product "+product.getProductid());
+		requestProductDao.requestProduct(product);
+		return "Product Successfully Requested";
+	}
+	
+	@GetMapping("/requestProduct")
+	private List<RequestProduct> getrequestedProduct()
+	{
+		return requestProductDao.getRequestProduct();
+	}
+	
+	@GetMapping("/requestProduct/{id}")
+	private List<RequestProduct> getrequestedProduct(@PathVariable int id)
+	{
+		return requestProductDao.getRequestProduct(id);
+	}
+	
+	@PostMapping("/verifyToken")
+	private boolean verifyToken(@RequestParam String token)
+	{
+		System.out.println("Data:"+token);
+		System.out.println("token:"+jwtTokenProvider.validateToken(token));
+		return jwtTokenProvider.validateToken(token);
 	}
 
 }

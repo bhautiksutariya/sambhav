@@ -9,5 +9,4 @@ public class ReportProductDAO {
 
 	@Autowired
 	private ReportProductRepository reportProductRepository;
-	
 }

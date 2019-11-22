@@ -9,14 +9,6 @@ import lombok.Data;
 public class RequestProductDTO {
 
 	@NotEmpty
-	private int requestid;
+	private int productid;
 	
-	@NotEmpty
-	private Product productid;
-	
-	@NotEmpty
-	private User userid;
-	
-	@NotEmpty
-	private Date datetime;
 }

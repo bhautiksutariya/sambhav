@@ -1,7 +1,9 @@
 package com.sambhav.model;
 
 import java.util.Date;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,17 +30,32 @@ public class RequestProduct {
 	private int requestid;
 	
 	@JsonBackReference
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "productid")
 	private Product productid;
 	
 	@JsonBackReference
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userid")
 	private User userid;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date",columnDefinition = "datetime")
 	private Date datetime;
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RequestProduct)) return false;
+        RequestProduct that = (RequestProduct) o;
+        return Objects.equals(productid.getProductname(), that.productid.getProductname()) &&
+                Objects.equals(userid.getUsername(), that.userid.getUsername()) &&
+                Objects.equals(datetime, that.datetime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productid.getProductname(), userid.getUsername(), datetime);
+    }
 	
 }

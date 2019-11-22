@@ -18,7 +18,7 @@ public class CategoryDAO {
 	{
 		Category c=new Category();
 		c.setCategoryname(category.getCategoryname());
-		c.setStatus(category.isStatus());
+		c.setStatus(true);
 		return categoryRepository.save(c);
 	}
 	

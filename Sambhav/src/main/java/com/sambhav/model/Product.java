@@ -58,15 +58,15 @@ public class Product {
 	private boolean status;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = Transaction.class)
+	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = Transaction.class,cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Product> Productbuyers;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = ReportProduct.class)
+	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = ReportProduct.class,cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Product> Productreports;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = RequestProduct.class)
+	@OneToMany(mappedBy = "productid",fetch = FetchType.LAZY,targetEntity = RequestProduct.class,cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Product> Productrequests;
 	
 }

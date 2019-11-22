@@ -30,7 +30,7 @@ public class UserDAO {
 
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        user.setRole(signUpRequest.getRole());
+        user.setRole("user");
         
         user.setStatus(true);
 
